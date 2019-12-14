@@ -36,3 +36,15 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:post-detail', kwargs={'pk': self.id})
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.CharField(max_length=100)
+    body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return self.body[:30]

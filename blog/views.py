@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from .models import Post, Category, Author
+from .models import Post, Category, Author, Comment
 
 def index(request):
     featured_posts = Post.objects.filter(featured=True)[:3]
@@ -21,7 +21,17 @@ def blog(request):
 
 def post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
+    if request.method == 'POST':
+        author = request.POST['username']
+        body = request.POST['usercomment']
+
+        new_comment = Comment(post=post, author=author, body=body)
+        new_comment.save()
+
+    comments = Comment.objects.filter(post=post)
+
     context = {
-        'post': post
+        'post': post,
+        'comments': comments
     }
     return render(request, 'post.html', context)
