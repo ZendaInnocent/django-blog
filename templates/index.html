@@ -43,10 +43,10 @@
                 <header class="post-header">
                   <div class="category">
                   {% for cat in post.categories.all %}
-                  <a href="#">{{ cat }}</a>
+                  <a href="{% url 'blog:post-category' cat.slug %}">{{ cat }}</a>
                   {% endfor %}
                   </div>
-                  <a href="{% url 'blog:post-detail' post.id %}">
+                  <a href="{{ post.get_absolute_url }}">
                     <h2 class="h4">{{ post.title }}</h2>
                   </a>
                 </header>
@@ -90,19 +90,19 @@
           <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </header>
         <div class="row">
-        {% for post in latest_posts %}
+        {% for post in object_list %}
         <div class="post col-md-4">
             <div class="post-thumbnail">
-              <a href="{% url 'blog:post-detail' post.id %}">
+              <a href="{{ post.get_absolute_url }}">
                 <img src="{{ post.thumbnail.url }}" alt="..." class="img-fluid">
               </a>
             </div>
             <div class="post-details">
               <div class="post-meta d-flex justify-content-between">
-                <div class="date">{{ post.timestamp |date }}</div>
+                <!-- <div class="date">{{ post.timestamp |date }}</div> -->
                 <div class="category">
                     {% for cat in post.categories.all %}
-                    <a href="#">{{ cat }}</a>
+                    <a href="{% url 'blog:post-category' cat.slug %}">{{ cat }}</a>
                     {% endfor %}
                 </div>
               </div><a href="{% url 'blog:post-detail' post.id %}">
@@ -126,12 +126,24 @@
           </div>
           <div class="col-md-8">
             <div class="form-holder">
-              <form action="#">
+              <form action="." method="POST">
+                {% csrf_token %}
                 <div class="form-group">
                   <input type="email" name="email" id="email" placeholder="Type your email address">
                   <button type="submit" class="submit">Subscribe</button>
                 </div>
               </form>
+              {% if messages %}
+                
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+                </div>
+                {% endfor %}
+                  
+              {% endif %}
+                
+              
             </div>
           </div>
         </div>
@@ -139,12 +151,26 @@
     </section>
     <!-- Gallery Section-->
     <section class="gallery no-padding">    
+        
       <div class="row">
+          {% for item in gallery_items %}
         <div class="mix col-lg-3 col-md-3 col-sm-6">
-          <div class="item"><a href="{% static 'img/gallery-1.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-1.jpg' %}" alt="..." class="img-fluid">
-              <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
+          <div class="item">
+            <a href="{{ item.thumbnail.url }}" data-fancybox="gallery" class="image">
+              <img src="{{ item.thumbnail.url }}" alt="..." class="img-fluid">
+              <div class="overlay d-flex align-items-center justify-content-center">
+                <div class="text-center p-3">
+                  <h3>{{ item.title }}</h3>
+                  <p>
+                    {{ item.description }}
+                  </p>
+              </div>
+              </div>
+            </a>
+          </div>
         </div>
-        <div class="mix col-lg-3 col-md-3 col-sm-6">
+      {% endfor %}
+        <!-- <div class="mix col-lg-3 col-md-3 col-sm-6">
           <div class="item"><a href="{% static 'img/gallery-2.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-2.jpg' %}" alt="..." class="img-fluid">
               <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
         </div>
@@ -155,7 +181,7 @@
         <div class="mix col-lg-3 col-md-3 col-sm-6">
           <div class="item"><a href="{% static 'img/gallery-4.jpg' %}" data-fancybox="gallery" class="image"><img src="{% static 'img/gallery-4.jpg' %}" alt="..." class="img-fluid">
               <div class="overlay d-flex align-items-center justify-content-center"><i class="icon-search"></i></div></a></div>
-        </div>
+        </div> -->
       </div>
     </section>
     

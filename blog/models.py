@@ -11,15 +11,20 @@ class Author(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=30)
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
 
     def __str__(self):
-        return self.name
+        return self.slug
+
+
+
 
 class Post(models.Model):
     title = models.CharField(max_length=140)
+    slug = models.SlugField(unique=True)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category)
@@ -28,6 +33,7 @@ class Post(models.Model):
     comment_count = models.IntegerField(default=0)
     featured = models.BooleanField()
 
+
     class Meta:
         ordering = ['-timestamp', 'title']
 
@@ -35,7 +41,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('blog:post-detail', kwargs={'pk': self.id})
+        return reverse('blog:post-detail', kwargs={'slug': self.slug})
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -46,3 +52,15 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.body[:30]
+
+
+class Gallery(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField()
+    thumbnail = models.ImageField(upload_to='gallery')
+
+    class Meta:
+        verbose_name_plural = 'Gallery'
+
+    def __str__(self):
+        return self.title

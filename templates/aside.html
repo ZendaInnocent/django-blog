@@ -6,9 +6,10 @@
           <header>
             <h3 class="h6">Search the blog</h3>
           </header>
-          <form action="#" class="search-form">
+          <form action="{% url 'blog:search-results' %}" class="search-form" method="GET">
+            
             <div class="form-group">
-              <input type="search" placeholder="What are you looking for?">
+              <input type="text" name='q' placeholder="What are you looking for?">
               <button type="submit" class="submit"><i class="icon-search"></i></button>
             </div>
           </form>
@@ -55,7 +56,7 @@
           </header>
           {% for cat in category_count %}
           <div class="item d-flex justify-content-between">
-            <a href="#">{{ cat.name }}</a><span>{{ cat.posts_count}}</span>
+            <a href="{% url 'blog:post-category' cat.slug %}">{{ cat.name }}</a><span>{{ cat.posts_count}}</span>
           </div>
           {% endfor %}
         </div>
