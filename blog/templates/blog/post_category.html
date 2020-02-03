@@ -24,10 +24,15 @@
                       <a href="{% url 'blog:post-category' cat.slug %}">{{ cat }}</a>
                       {% endfor %}
                       </div>
-                    </div><a href="{% url 'blog:post-detail' post.id %}">
-                      <h3 class="h4">{{ post.title }}</h3></a>
-                    <p class="text-muted">
-                      {{ post.content }}
+                    </div>
+                    <a href="{{ post.get_absolute_url }}">
+                      <h3 class="h4">{{ post.title }}</h3>
+                    </a>
+                    <p class="lead">
+                      {{ post.overview }}
+                    </p>
+                    <p>
+                      {{ post.content | safe }}
                     </p>
                     <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
                         <div class="avatar"><img src="{{ post.author.profile_picture.url }}" alt="..." class="img-fluid"></div>
@@ -73,7 +78,7 @@
             {% endif %}
           </div>
         </main>
-        {% include 'aside.html' %}
+        {% include 'aside.html' with object_list=latest_posts %}
       </div>
     </div>
 {% endblock content %}

@@ -2,22 +2,22 @@
 
 <header class="header">
     <!-- Main Navbar-->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar sticky-top navbar-expand-lg">
         <div class="search-area">
-        <div class="search-area-inner d-flex align-items-center justify-content-center">
-            <div class="close-btn"><i class="icon-close"></i></div>
-            <div class="row d-flex justify-content-center">
-            <div class="col-md-8">
-                <form action="{% url 'blog:search-results' %}" method="POST">
-                    {% csrf_token %}
-                <div class="form-group">
-                    <input type="search" name="q" id="search" placeholder="What are you looking for?">
-                    <button type="submit" class="submit"><i class="icon-search-1"></i></button>
+            <div class="search-area-inner d-flex align-items-center justify-content-center">
+                <div class="close-btn"><i class="icon-close"></i></div>
+                <div class="row d-flex justify-content-center">
+                <div class="col-md-8">
+                    <form action="{% url 'blog:search-results' %}" method="POST">
+                        {% csrf_token %}
+                    <div class="form-group">
+                        <input type="search" name="q" id="search" placeholder="What are you looking for?">
+                        <button type="submit" class="submit"><i class="icon-search-1"></i></button>
+                    </div>
+                    </form>
                 </div>
-                </form>
+                </div>
             </div>
-            </div>
-        </div>
         </div>
         <div class="container">
         <!-- Navbar Brand -->
@@ -39,7 +39,31 @@
                 active
                 {% endif %} ">Blog</a>
             </li>
-            </li>
+            
+            
+            {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'logout' %}" class="nav-link ">Logout</a>
+                </li>
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                        <a href="{% url 'blog:post-create' %}" class="nav-link {% if request.path == '/post-create/' %}
+                            active
+                            {% endif %} ">
+                            New Post
+                        </a>
+                    </li>
+                {% endif %}
+            {% else %}
+                <li class="nav-item"><a href="{% url 'users:register' %}" class="nav-link {% if request.path == '/users/register/' %}
+                    active
+                    {% endif %} ">Register</a>
+                </li>
+                <li class="nav-item"><a href="{% url 'login' %}" class="nav-link {% if request.path == '/users/login/' %}
+                    active
+                    {% endif %} ">Login</a>
+                </li>
+            {% endif %}
             <li class="nav-item"><a href="#" class="nav-link ">Contact</a>
             </li>
             </ul>

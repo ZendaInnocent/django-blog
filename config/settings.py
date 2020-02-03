@@ -32,9 +32,12 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'blog',
+    'users',
     'marketing',
 
     'crispy_forms',
+    'markdownify',
+    'tinymce',
 
     
     'django.contrib.admin',
@@ -75,6 +78,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+# AUTHENTICATION_BACKENDS = [
+#     'users.authentication.EmailOrUsernameModelBackend',
+#     'django.contrib.auth.backends.ModelBackend'
+# ]
+
+# AUTH_USER_MODEL = 'users.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -130,3 +139,50 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Markdownify
+MARKDOWNIFY_STRIP = False
+MARKDOWNIFY_WHITELIST_TAGS = [
+    'a', 'blockquote', 'code', 'em', 'h1','h2','h3','h4','h5','h6','li', 'ol', 'p', 'strong', 'ul'
+]
+
+# TinyMCE
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'js/tinymce/tinymce.min.js')
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'js/tinymce')
+
+TINYMCE_DEFAULT_CONFIG = {
+    'height': 300,
+    'plugins': '''
+            textcolor save link image media preview codesample contextmenu
+            table code lists fullscreen  insertdatetime  nonbreaking
+            contextmenu directionality searchreplace wordcount visualblocks
+            visualchars code fullscreen autolink lists  charmap print  hr
+            anchor pagebreak
+            ''',
+    'toolbar1': '''
+            fullscreen preview | styleselect | bold italic underline | fontselect,
+            fontsizeselect  | forecolor backcolor | alignleft alignright |
+            aligncenter alignjustify | indent outdent | bullist numlist table |
+            | link image media | codesample |
+            ''',
+    'toolbar2': '''
+            visualblocks visualchars |
+            charmap hr pagebreak nonbreaking anchor |  code |
+            ''',
+    'cleanup_on_startup': True,
+    'menubar': True,
+    'image_caption': True,
+    'image_advtab': True,
+    'custom_undo_redo_levels': 10,
+    'file_browser_callback': 'myFileBrowser',
+    'contextmenu': 'formats | link image',
+    'statusbar': True,
+}
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'blog:home'
+LOGOUT_REDIRECT_URL = 'blog:home'

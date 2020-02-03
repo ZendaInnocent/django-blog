@@ -1,9 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.urls import reverse
+from tinymce.models import HTMLField
 
 class Author(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     profile_picture = models.ImageField()
 
     def __str__(self):
@@ -25,13 +26,18 @@ class Category(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=140)
     slug = models.SlugField(unique=True)
-    content = models.TextField()
+    overview = models.TextField()
+    content = HTMLField('Content')
     timestamp = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category)
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     thumbnail = models.ImageField()
     comment_count = models.IntegerField(default=0)
     featured = models.BooleanField()
+    prev_post = models.ForeignKey(
+        'self', related_name='previous_post', on_delete=models.SET_NULL, null=True, blank=True)
+    nxt_post = models.ForeignKey(
+        'self', related_name='next_post', on_delete=models.SET_NULL, null=True, blank=True)
 
 
     class Meta:
@@ -42,6 +48,17 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog:post-detail', kwargs={'slug': self.slug})
+        
+    def get_update_url(self):
+        return reverse('blog:post-update', kwargs={'slug': self.slug})
+
+    def get_delete_url(self):
+        return reverse('blog:post-delete', kwargs={'slug': self.slug})
+
+
+    @property
+    def get_comments(self):
+        return self.comment_set.all()
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
