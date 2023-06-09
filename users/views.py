@@ -10,5 +10,3 @@ class UserRegisterView(SuccessMessageMixin, CreateView):
     template_name = 'registration/register.html'
     success_url = reverse_lazy('login')
     success_message = "Account created successfully for %(username)s. You may log in now."
-
-# Create your views here.

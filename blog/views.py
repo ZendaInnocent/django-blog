@@ -1,13 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post, Category, Author, Comment, Gallery
-from marketing.models import Subscriber
-from django.db.models import Count, Q
-from django.views.generic import ListView, DetailView, FormView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib import messages
-from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import PostCreateForm
+from django.db.models import Count, Q
+from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import DetailView, ListView
+from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from marketing.models import Subscriber
+
+from .models import Author, Category, Comment, Gallery, Post
 
 
 def get_category_count():
@@ -48,7 +48,7 @@ class HomePageView(ListView):
         if request.method == 'POST':
             email = request.POST['email']
             subscriber, created = Subscriber.objects.get_or_create(email=email)
-            
+
             if created:
                 messages.success(request, 'Please check your e-mail for confirmation')
             elif subscriber:
@@ -59,7 +59,7 @@ class HomePageView(ListView):
 class PostListView(ListView):
     model = Post
     paginate_by = 4
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['category_count'] = get_category_count()
@@ -83,7 +83,7 @@ class PostDetailView(DetailView):
             body = request.POST['usercomment']
             Comment.objects.create(post=post, author=author, body=body)
         return redirect('blog:post-detail', slug=kwargs['slug'])
-    
+
 
 class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
@@ -101,7 +101,7 @@ class PostCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'slug', 'overview', 'content', 'categories', 'thumbnail', 'featured']
+    fields = ['title', 'slug', 'overview', 'content', 'categories', 'thumbnail', 'featured',]
 
     def form_valid(self, form):
         author = get_object_or_404(Author, user=self.request.user)

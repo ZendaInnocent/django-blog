@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from decouple import config
+from django.db.models import BigAutoField
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'r4o*h+s(qdmvlg4(9=vj$*-jo##0l^@m1-i$_di1qzz6au7o8k'
+SECRET_KEY = config('DJANGO_SECRET_KEY', default='r4o*h+s(qdmvlg4(9=vj$*-jo##0l^@m1-i$_di1qzz6au7o8k')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -36,10 +38,10 @@ INSTALLED_APPS = [
     'marketing',
 
     'crispy_forms',
-    'markdownify',
+    'crispy_bootstrap4',
+    # 'markdownify',
     'tinymce',
 
-    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -142,7 +144,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 # Crispy Forms
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = 'Bootstrap4'
 
 # Markdownify
 MARKDOWNIFY_STRIP = False
@@ -186,3 +188,5 @@ TINYMCE_DEFAULT_CONFIG = {
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'blog:home'
 LOGOUT_REDIRECT_URL = 'blog:home'
+
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
