@@ -3,11 +3,28 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, FormView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from marketing.models import Subscriber
+from django.contrib.messages.views import SuccessMessageMixin
+
+
 
 from .models import Author, Category, Comment, Gallery, Post
+from .forms import ContactForm
+
+
+class ContactView(SuccessMessageMixin, FormView):
+    form_class = ContactForm
+    template_name = 'contact.html'
+    success_url = '/'
+    success_message = ('Your message has sent successful. '
+                       'We will get to you shortly.')
+
+    def form_valid(self, form):
+        form.send_mail()
+        return super().form_valid(form)
+
 
 
 def get_category_count():

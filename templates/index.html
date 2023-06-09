@@ -3,10 +3,10 @@
 {% load static %}
 
 {% block content %}
-  
-  
+
+
   <body>
-    
+
     <!-- Hero Section-->
     <section style="background: url({% static 'img/hero.jpg' %}); background-size: cover; background-position: center center" class="hero">
       <div class="container">
@@ -31,7 +31,7 @@
     <section class="featured-posts no-padding-top">
       <div class="container">
         <!-- Post-->
-        
+
         {% for post in featured_posts %}
         <div class="row d-flex align-items-stretch">
             {% if forloop.counter == 2 or  forloop.counter == 4 %}
@@ -64,16 +64,16 @@
               </div>
             </div>
           </div>
-          
+
           {% if forloop.counter == 1 or forloop.counter == 3 %}
           <div class="image col-lg-5">
             <img src="{{ post.thumbnail.url }}" alt="...">
           </div>
           {% endif %}
-            
+
         </div>
         {% endfor %}
-          
+
       </div>
     </section>
     <!-- Divider Section-->
@@ -87,9 +87,9 @@
       </div>
     </section>
     <!-- Latest Posts -->
-    <section class="latest-posts"> 
+    <section class="latest-posts">
       <div class="container">
-        <header> 
+        <header>
           <h2>Latest from the blog</h2>
           <p class="text-big">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </header>
@@ -136,10 +136,10 @@
         {% endfor %}
         </div>
       </div>
-      
+
     </section>
     <!-- Newsletter Section-->
-    <section class="newsletter no-padding-top">    
+    <section class="newsletter no-padding-top">
       <div class="container">
         <div class="row">
           <div class="col-md-6">
@@ -156,24 +156,24 @@
                 </div>
               </form>
               {% if messages %}
-                
+
                 {% for message in messages %}
                 <div class="alert alert-{{ message.tags }}">
                   {{ message }}
                 </div>
                 {% endfor %}
-                  
+
               {% endif %}
-                
-              
+
+
             </div>
           </div>
         </div>
       </div>
     </section>
     <!-- Gallery Section-->
-    <section class="gallery no-padding">    
-        
+    <section class="gallery no-padding">
+
       <div class="row">
           {% for item in gallery_items %}
         <div class="mix col-lg-3 col-md-3 col-sm-6">
@@ -206,8 +206,6 @@
         </div> -->
       </div>
     </section>
-    
-  
+
+
 {% endblock content %}
-    
-    

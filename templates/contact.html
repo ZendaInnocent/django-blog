@@ -6,8 +6,8 @@
 {% block content %}
 
 <div class="container my-5">
-    <div class="row col-md-6 offset-3">
-        <form action="" class="">
+    <div class="row col-md-8 offset-3">
+        <form method="POST">
             {% csrf_token %}
             {{ form | crispy}}
             <button type="submit" class="btn btn-primary mt-3 rounded">Send Message</button>
@@ -15,7 +15,7 @@
     </div>
 </div>
 
-<!-- 
+<!--
             <div class="col-md-4 text-md-right text-center">
                 <img class='contact-image p-1 rounded' src="{% static 'img/about-image.png' %} " alt="Innocent Zenda">
                 <div>
@@ -23,7 +23,6 @@
                     <h4>Web Developer</h4>
                 </div>
             </div> -->
-       
+
 
 {% endblock content %}
-

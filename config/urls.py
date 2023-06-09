@@ -4,12 +4,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from blog.views import ContactView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blog.urls', namespace='blog')),
     path('tinymce/', include('tinymce.urls')),
     path('users/', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
+    path('contact/', ContactView.as_view(), name='contact'),
+
 ]
 
 if settings.DEBUG:
